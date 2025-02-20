@@ -3,11 +3,12 @@ export interface Story {
   title: string;
   by: string;
   score: number;
-  kids?: number[];
+  kids: number[];
   url?: string;
   time: number;
   descendants: number;
   type: string;
+  comments?: any[];
 
 }
 
@@ -19,6 +20,7 @@ export interface CommentType {
   time: number;
   type: string;
   parent: number;
+  replies?: CommentType[];
 }
 
 export default {};

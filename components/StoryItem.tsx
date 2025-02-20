@@ -5,10 +5,10 @@ import { Story } from '@/app/types/storyTypes';
 
 interface Props {
   story: Story;
-  onPress?: () => void;
+  onPress: (item: Story) => void;
 }
 
-const StoryItem: React.FC<Props> = ({ story }) => {
+const StoryItem: React.FC<Props> = ({ story, onPress: pressCallback }) => {
   const openURL = () => {
     if (story.url) {
       Linking.openURL(story.url);
@@ -16,8 +16,11 @@ const StoryItem: React.FC<Props> = ({ story }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
       {/* Title */}
+      <TouchableOpacity onPress={() => pressCallback(story)}>
+
+
       <Text style={styles.title}>{story.title}</Text>
 
       {/* Story Details */}
@@ -30,7 +33,7 @@ const StoryItem: React.FC<Props> = ({ story }) => {
 
       {/* Story Type */}
       <Text style={styles.type}>📌 Type: {story.type}</Text>
-
+      </TouchableOpacity>
       {/* Open URL Button */}
       {story.url && (
         <TouchableOpacity onPress={openURL} style={styles.button}>
