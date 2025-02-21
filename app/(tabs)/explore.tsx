@@ -1,109 +1,96 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Linking } from 'react-native';
+import { Card, Avatar, Text, Button, Divider } from 'react-native-paper';
+const ExploreScreen: React.FC = () => {
+  const openURL = (url: string) => {
+    Linking.openURL(url);
+  };
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-
-export default function TabTwoScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <View style={styles.container}>
+      {/* Profile Card */}
+      <Card style={styles.card}>
+        <Card.Title
+          title="Nguyen Duc Thang"
+          subtitle="Fullstack Developer | Nodejs Developer"
+          left={(props) => <Avatar.Image {...props} source={require('../../assets/images/Thang.jpg')} />}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+        <Card.Content>
+          <Text style={styles.bio}>
+            Passionate about building modern, high-performance mobile applications. I love working with React Native, Expo, and creating great user experiences.
+          </Text>
+        </Card.Content>
+      </Card>
+
+      {/* Skills Section */}
+      <Card style={styles.card}>
+        <Card.Title title="💡 Tech Stack" />
+        <Card.Content>
+          <Text>⚡ Node.js</Text>
+          <Text>⚡ Nest.js</Text>
+          <Text>⚡ React Native</Text>
+          <Text>⚡ TypeScript</Text>
+          <Text>⚡ Expo</Text>
+          <Text>⚡ Firebase</Text>
+          <Text>⚡ ...Other</Text>
+        </Card.Content>
+      </Card>
+
+      {/* Social Links */}
+      <Card style={styles.card}>
+        <Card.Title title="🌐 Connect With Me" />
+        <Card.Content>
+          <Button icon="github" mode="outlined" onPress={() => openURL('https://github.com/ndthang0000')}>
+            GitHub
+          </Button>
+          <Divider style={styles.divider} />
+          <Button icon="linkedin" mode="outlined" onPress={() => openURL('https://linkedin.com/in/thang-nguyen-duc-0b75071b5')}>
+            LinkedIn
+          </Button>
+
+          <Divider style={styles.divider} />
+          <Button icon="email" mode="outlined" onPress={() => openURL('mailto:ndthang0000@gmail.com')}>
+            Email Me
+          </Button>
+        </Card.Content>
+      </Card>
+
+      {/* Hire Me Button */}
+      <Button mode="contained" style={styles.hireMe} onPress={() => openURL('https://thangnguyen.cloud')}>
+        🚀 Hire Me - My portfolio
+      </Button>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    marginTop: 15,
+    flex: 1,
+    padding: 15,
+    backgroundColor: '#f5f5f5',
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  card: {
+    marginBottom: 15,
+    marginTop: 15,
+    backgroundColor: 'white',
+    elevation: 3,
+    borderRadius: 10,
+  },
+  bio: {
+    fontSize: 14,
+    color: '#555',
+    marginTop: 5,
+  },
+  divider: {
+    marginVertical: 5,
+  },
+  hireMe: {
+    marginTop: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: '#007AFF',
   },
 });
+
+export default ExploreScreen;
