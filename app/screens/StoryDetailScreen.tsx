@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import { CommentType, Story } from '../types/storyTypes';
-import { fetchCommentDetail, fetchStoryDetails } from '../apis/hackerNewsAPI';
+import { View, FlatList, StyleSheet } from 'react-native';
+import { Story } from '../types/storyTypes';
+import { fetchStoryDetails } from '../apis/hackerNewsAPI';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import CommentItem from '@/components/CommentItem';
+import { ActivityIndicator, Card, Text, IconButton } from 'react-native-paper';
+import { formatDistanceToNow } from 'date-fns';
 
 type RootStackParamList = {
   StoryDetail: { id: number };
@@ -14,7 +16,7 @@ const StoryDetailScreen: React.FC<Props> = ({ route }) => {
   const { id } = route.params;
   const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  console.log({ comment: story?.comments })
+
   useEffect(() => {
     loadStory();
   }, []);
@@ -26,15 +28,32 @@ const StoryDetailScreen: React.FC<Props> = ({ route }) => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    console.log(story)
-  }, [story]);
   // if (loading) return <ActivityIndicator size="large" style={styles.loader} />;
+
+  if (loading) {
+    return <ActivityIndicator size="large" style={styles.loader} />;
+  }
+
+  if (!story) {
+    return <Text style={styles.noComments}>Story not found.</Text>;
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{story?.title}</Text>
-      <Text style={styles.details}>By {story?.by} | {story?.score} points</Text>
+      <Card style={styles.card}>
+        <Card.Title
+          title={story?.title}
+          titleStyle={styles.title}
+          subtitle={`By ${story.by} • ${formatDistanceToNow(new Date(story.time * 1000), { addSuffix: true })}`}
+          subtitleStyle={styles.subtitle}
+          left={(props) => <IconButton {...props} icon="newspaper" />}
+        />
+        <Card.Content>
+          <Text style={styles.details}>
+            🔥 {story.score} points • 💬 {story.descendants} comments
+          </Text>
+        </Card.Content>
+      </Card>
       <FlatList
         data={story?.comments}
         keyExtractor={(item) => item.id.toString()}
@@ -59,6 +78,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 3,
   },
+  card: { marginBottom: 10, backgroundColor: 'white', elevation: 3, borderRadius: 10 },
+  subtitle: { fontSize: 14, color: '#666' },
   author: { fontWeight: 'bold', color: '#007aff' },
   time: { fontSize: 12, color: '#666' },
   text: { fontSize: 14, color: '#333', marginTop: 5 },

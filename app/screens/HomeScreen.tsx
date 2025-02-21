@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import RNPickerSelect from 'react-native-picker-select';
 import { View, FlatList, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Story } from '../types/storyTypes';
@@ -125,7 +124,8 @@ const styleDropdown = StyleSheet.create({
   dropdown: {
     margin: 16,
     height: 50,
-    marginBottom: 0
+    marginBottom: 0,
+    fontWeight: 'bold'
     // borderBottomColor: 'gray',
     // borderBottomWidth: 0.5,
   },
