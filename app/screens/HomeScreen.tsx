@@ -24,6 +24,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [storyType, setStoryType] = useState<string>('topstories')
   const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);
+  const [isEnding, setIsEnding] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
 
 
@@ -40,7 +41,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   const loadMoreStories = () => {
-    if (!isFetchingMore) {
+    if (!isEnding && !isFetchingMore) {
       setPage((prev) => prev + 1);
     }
   };
@@ -49,6 +50,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     const fetchMoreStories = async () => {
       setIsFetchingMore(true);
       const data = await fetchStories(storyType, stories.length, PAGE_SIZE);
+      if (data.length === 0) {
+        setIsEnding(true);
+        return
+      }
       setStories((prev) => [...prev, ...data]);
       setIsFetchingMore(false);
     };
@@ -78,18 +83,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         inputSearchStyle={styleDropdown.inputSearchStyle}
         iconStyle={styleDropdown.iconStyle}
         data={dropdownData}
-        search
+        search={false}
         maxHeight={300}
         labelField="label"
         valueField="value"
         placeholder="Select item"
-        searchPlaceholder="Search..."
         value={storyType}
         onChange={item => {
           setStoryType(item.value);
         }}
         renderLeftIcon={() => (
-          <AntDesign style={styleDropdown.icon} color="black" name="book" size={20} />
+          <AntDesign style={styleDropdown.icon} color="black" name="book" size={24} />
         )}
       />
       <Text style={styles.textDes}>Has {stories.length} stories 📒.</Text>
@@ -102,7 +106,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           )}
           onEndReached={loadMoreStories} // Load more when reaching the bottom
           onEndReachedThreshold={0.8} // Trigger when 50% close to bottom
-          ListFooterComponent={isFetchingMore ? <ActivityIndicator size="large" /> : null}
+          ListFooterComponent={isEnding ? <Text style={styles.textDes}>No more stories</Text> : (isFetchingMore ? <ActivityIndicator size="large" /> : null)}
         />
       )}
     </View>
@@ -117,17 +121,25 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     paddingBottom: 10,
+    paddingTop: 5,
   }
 });
 
 const styleDropdown = StyleSheet.create({
   dropdown: {
-    margin: 16,
+    paddingInline: 16,
+    marginBlock: 16,
     height: 50,
     marginBottom: 0,
-    fontWeight: 'bold'
-    // borderBottomColor: 'gray',
-    // borderBottomWidth: 0.5,
+    fontWeight: 'bold',
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3
   },
   icon: {
     marginRight: 5,
@@ -137,10 +149,11 @@ const styleDropdown = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 16,
+    fontWeight: 'bold',
   },
   iconStyle: {
-    width: 20,
-    height: 20,
+    width: 28,
+    height: 28,
   },
   inputSearchStyle: {
     height: 40,

@@ -7,8 +7,9 @@ const BASE_URL = 'https://hacker-news.firebaseio.com/v0';
 export const fetchStories = async (type: string = 'topstories', offset: number, limit: number = 10): Promise<Story[]> => {
   try {
     const { data: storyIds } = await axios.get<number[]>(`${BASE_URL}/${type}.json`);
+    if (offset >= storyIds.length) return [];
     const stories = await Promise.all(
-      storyIds.slice(offset, offset + limit).map(async (id) => {
+      storyIds.slice(offset, Math.min(offset + limit, storyIds.length)).map(async (id) => {
         const { data } = await axios.get<Story>(`${BASE_URL}/item/${id}.json`);
         return data;
       })
