@@ -27,7 +27,6 @@ export const fetchStoryDetails = async (storyId: number): Promise<Story> => {
 
     // Fetch only top-level (level 1) comments
     const comments = story.kids ? await fetchLevel1Comments(story.kids) : [];
-
     return { ...story, comments };
   } catch (error) {
     console.error('Error fetching story details:', error);
