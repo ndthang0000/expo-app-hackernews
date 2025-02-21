@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "hackernews-app",
+    "privacy": "public",
     "slug": "hackernews-app",
     "version": "1.0.0",
     "orientation": "portrait",
